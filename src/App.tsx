@@ -9,6 +9,10 @@ function App() {
   const theme = createTheme({
     palette: {
       mode: mode,
+      background: {
+        default: "#F7F5F8", // ← основной фон страницы
+        paper: "#FFFFFF", // ← фон карточек и бумажных элементов
+      },
     },
   });
 
