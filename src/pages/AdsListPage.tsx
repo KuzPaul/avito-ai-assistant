@@ -1,12 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import {
-  Container,
-  Grid,
-  Box,
-  useMediaQuery,
-  useTheme,
-  Typography,
-} from "@mui/material";
+import { Grid, Box, useMediaQuery, useTheme, Typography } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { filtersActions } from "../store";
 import { getItems } from "../api/items";
@@ -14,9 +7,10 @@ import { Header } from "../components/Layout/Header";
 import { Sidebar } from "../components/Layout/Sidebar";
 import { AdCard } from "../components/Ads/AdCard";
 import { Pagination } from "../components/UI/Pagination";
-import { Loading } from "../components/UI/Loading";
 import { ErrorAlert } from "../components/UI/ErrorAlert";
 import { useQuery } from "@tanstack/react-query";
+import { Container } from "../components/Layout/Container";
+import { useCallback, useMemo } from "react";
 
 export const AdsListPage = () => {
   const navigate = useNavigate();
@@ -54,21 +48,34 @@ export const AdsListPage = () => {
   });
 
   //TODO на беке нет сортировки по цене сделал на фронте
-  let items = data?.items || [];
-  let total = data?.total || 0;
+  const { items, total } = useMemo(() => {
+    if (sortBy !== "price") {
+      return { items: data?.items || [], total: data?.total || 0 };
+    }
 
-  if (sortBy === "price" && data?.items) {
-    const sorted = [...data.items].sort((a, b) => {
-      return sortOrder === "asc" ? a.price - b.price : b.price - a.price;
-    });
+    const sorted = [...(data?.items || [])].sort((a, b) =>
+      sortOrder === "asc" ? a.price - b.price : b.price - a.price,
+    );
+
     const start = (page - 1) * LIMIT;
-    items = sorted.slice(start, start + LIMIT);
-    total = data.items.length;
-  }
+    return {
+      items: sorted.slice(start, start + LIMIT),
+      total: sorted.length,
+    };
+  }, [data, sortBy, sortOrder, page, LIMIT]);
 
-  const handleCardClick = (id: string) => {
-    navigate(`/ads/${id}`);
-  };
+  const handleCardClick = useCallback(
+    (id: number) => navigate(`/ads/${id}`),
+    [navigate],
+  );
+
+  const handlePageChange = useCallback(
+    (newPage: number) => {
+      dispatch(filtersActions.setPage(newPage));
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    },
+    [dispatch],
+  );
 
   if (isError)
     return (
@@ -79,18 +86,25 @@ export const AdsListPage = () => {
     );
 
   return (
-    <Box sx={{ minHeight: "100vh", bgcolor: "background.default" }}>
+    <Box
+      sx={{
+        width: "100%",
+        mx: "auto",
+        minHeight: "100vh",
+        bgcolor: "background.default",
+        gap: 0,
+      }}
+    >
       <Header total={total} />
-
-      <Container maxWidth="xl" sx={{ py: 3 }}>
-        <Grid container spacing={2}>
+      <Container>
+        <Box sx={{ display: "flex", mt: 2, gap: 3 }}>
           {!isMobile && (
-            <Grid size={{ xs: 12, md: 3 }}>
+            <Box sx={{ width: 256, flexShrink: 0 }}>
               <Sidebar />
-            </Grid>
+            </Box>
           )}
 
-          <Grid size={{ xs: 12, md: 9 }}>
+          <Grid size={{ xs: 12, md: 9 }} sx={{ p: 0 }}>
             {items.length === 0 ? (
               <Box sx={{ textAlign: "center", py: 8 }}>
                 <Typography variant="h6" color="text.secondary">
@@ -99,40 +113,43 @@ export const AdsListPage = () => {
               </Box>
             ) : (
               <>
-                <Grid container spacing={2}>
-                  {items.map((item) => (
-                    <Grid
-                      size={{
-                        xs: 12,
-                        sm: layout === "grid" ? 6 : 12,
-                        md: layout === "grid" ? 4 : 12,
-                      }}
-                      key={item.id}
-                    >
-                      <AdCard
-                        id={item.id}
-                        title={item.title}
-                        price={item.price}
-                        category={item.category}
-                        needsRevision={item.needsRevision}
-                        onClick={handleCardClick}
-                      />
-                    </Grid>
+                <Box
+                  sx={{
+                    display: "grid",
+                    gridTemplateColumns: {
+                      xs: "1fr",
+                      sm: layout === "grid" ? "repeat(2, 1fr)" : "1fr",
+                      md: layout === "grid" ? "repeat(3, 1fr)" : "1fr",
+                      lg: layout === "grid" ? "repeat(5, 1fr)" : "1fr",
+                    },
+                    gap: 2,
+                  }}
+                >
+                  {items.map((item, index) => (
+                    <AdCard
+                      key={item.id || `item-${index}`}
+                      id={index + 1}
+                      title={item.title}
+                      price={item.price}
+                      category={item.category}
+                      needsRevision={item.needsRevision}
+                      onClick={handleCardClick}
+                    />
                   ))}
-                </Grid>
+                </Box>
 
                 <Pagination
                   total={total}
                   page={page}
                   limit={LIMIT}
-                  onChange={(newPage) =>
-                    dispatch(filtersActions.setPage(newPage))
-                  }
+                  onChange={(newPage) => {
+                    handlePageChange(newPage);
+                  }}
                 />
               </>
             )}
           </Grid>
-        </Grid>
+        </Box>
       </Container>
     </Box>
   );

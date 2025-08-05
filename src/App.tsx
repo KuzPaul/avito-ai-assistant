@@ -10,9 +10,12 @@ function App() {
     palette: {
       mode: mode,
       background: {
-        default: "#F7F5F8", // ← основной фон страницы
-        paper: "#FFFFFF", // ← фон карточек и бумажных элементов
+        default: "#F7F5F8",
+        paper: "#FFFFFF",
       },
+    },
+    typography: {
+      fontFamily: 'Roboto, "Helvetica Neue", Arial, sans-serif',
     },
   });
 
