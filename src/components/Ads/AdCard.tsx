@@ -1,4 +1,11 @@
-import { Card, CardContent, CardMedia, Typography, Chip } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+  Chip,
+  colors,
+} from "@mui/material";
 import { type Category } from "../../types";
 import { useAppSelector } from "../../store/hooks";
 import { memo } from "react";
@@ -10,13 +17,13 @@ const CATEGORY_LABELS: Record<Category, string> = {
 };
 
 interface AdCardProps {
-  id: number;
+  id: string;
   title: string;
   price: number;
   category: Category;
   imageUrl?: string;
   needsRevision: boolean;
-  onClick: (id: number) => void;
+  onClick: (id: string) => void;
 }
 export const AdCard = memo(
   ({
@@ -81,7 +88,6 @@ export const AdCard = memo(
                     position: "absolute",
                     top: "-10px",
                     left: "12px",
-                    bgcolor: "#ffffff",
                     p: "0 12px",
                     border: "1px solid rgba(217, 217, 217, 1)",
                     borderRadius: "6px",

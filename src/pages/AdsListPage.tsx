@@ -65,7 +65,7 @@ export const AdsListPage = () => {
   }, [data, sortBy, sortOrder, page, LIMIT]);
 
   const handleCardClick = useCallback(
-    (id: number) => navigate(`/ads/${id}`),
+    (id: string) => navigate(`/ads/${id}`),
     [navigate],
   );
 
@@ -127,8 +127,8 @@ export const AdsListPage = () => {
                 >
                   {items.map((item, index) => (
                     <AdCard
-                      key={item.id || `item-${index}`}
-                      id={index + 1}
+                      key={item.id}
+                      id={item.id}
                       title={item.title}
                       price={item.price}
                       category={item.category}

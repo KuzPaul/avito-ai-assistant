@@ -1,11 +1,11 @@
-export type Category = 'electronics' | 'auto' | 'real_estate';
+export type Category = "electronics" | "auto" | "real_estate";
 
 // Параметры для электроники
 export interface ElectronicsParams {
-  type?: 'phone' | 'laptop' | 'tablet' | 'misc';
+  type?: "phone" | "laptop" | "tablet" | "misc";
   brand?: string;
   model?: string;
-  condition?: 'new' | 'used';
+  condition?: "new" | "used";
   color?: string;
 }
 
@@ -15,13 +15,13 @@ export interface AutoParams {
   model?: string;
   year?: number;
   mileage?: number;
-  transmission?: 'manual' | 'automatic';
+  transmission?: "manual" | "automatic";
   enginePower?: number;
 }
 
 // Параметры для недвижимости
 export interface RealEstateParams {
-  type?: 'flat' | 'house' | 'room';
+  type?: "flat" | "house" | "room";
   area?: number;
   floor?: number;
   rooms?: number;
@@ -41,6 +41,7 @@ export interface Item {
   createdAt: string;
   imageUrl?: string;
   needsRevision?: boolean;
+  updatedAt: string;
 }
 
 // Для списка объявлений

@@ -8,6 +8,7 @@ import { store } from "./store";
 import App from "./App";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/600.css";
 import "@fontsource/roboto/700.css";
 import "./index.css";
 
