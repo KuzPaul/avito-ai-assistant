@@ -16,6 +16,7 @@ import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { filtersActions, uiActions } from "../../store";
 import GridViewIcon from "@mui/icons-material/GridView";
 import ViewListIcon from "@mui/icons-material/ViewList";
+import { useCallback, useMemo } from "react";
 
 type SortValue =
   | "newest"
@@ -32,20 +33,24 @@ export const Header = ({ total }: { total: number }) => {
   const { layout } = useAppSelector((state) => state.ui);
 
   // Состояние для активного элемента
-
-  const handleSortChange = (value: SortValue) => {
-    if (value === "newest") {
-      dispatch(filtersActions.setSort({ by: "createdAt", order: "desc" }));
-    } else if (value === "title-asc") {
-      dispatch(filtersActions.setSort({ by: "title", order: "asc" }));
-    } else if (value === "title-desc") {
-      dispatch(filtersActions.setSort({ by: "title", order: "desc" }));
-    } else if (value === "price-asc") {
-      dispatch(filtersActions.setSort({ by: "price", order: "asc" }));
-    } else if (value === "price-desc") {
-      dispatch(filtersActions.setSort({ by: "price", order: "desc" }));
+  const handleSortChange = useCallback((value: SortValue) => {
+    switch (value) {
+      case "newest":
+        return dispatch(
+          filtersActions.setSort({ by: "createdAt", order: "desc" }),
+        );
+      case "title-asc":
+        return dispatch(filtersActions.setSort({ by: "title", order: "asc" }));
+      case "title-desc":
+        return dispatch(filtersActions.setSort({ by: "title", order: "desc" }));
+      case "price-asc":
+        return dispatch(filtersActions.setSort({ by: "price", order: "asc" }));
+      case "price-desc":
+        return dispatch(filtersActions.setSort({ by: "price", order: "desc" }));
+      default:
+        return;
     }
-  };
+  }, []);
 
   const handleLayoutChange = (
     _e: React.MouseEvent<HTMLElement>,
@@ -57,14 +62,14 @@ export const Header = ({ total }: { total: number }) => {
   };
 
   // Определяем значение селекта
-  const selectValue = (): SortValue => {
+  const value = useMemo((): SortValue => {
     if (sortBy === "createdAt") return "newest";
     if (sortBy === "title")
       return sortOrder === "asc" ? "title-asc" : "title-desc";
     if (sortBy === "price")
       return sortOrder === "asc" ? "price-asc" : "price-desc";
     return "newest";
-  };
+  }, [sortBy, sortOrder]);
 
   return (
     <AppBar
@@ -146,7 +151,7 @@ export const Header = ({ total }: { total: number }) => {
               size="small"
               sx={{
                 "& .MuiToggleButton-root.Mui-selected": {
-                  color: "#1976d2", // синий цвет иконки
+                  color: "#1976d2",
                   backgroundColor: "transparent",
                 },
               }}
@@ -187,7 +192,7 @@ export const Header = ({ total }: { total: number }) => {
               }}
             >
               <Select
-                value={selectValue()}
+                value={value}
                 onChange={(e) => handleSortChange(e.target.value as SortValue)}
                 sx={{
                   "&.Mui-focused .MuiOutlinedInput-notchedOutline": {

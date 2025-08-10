@@ -1,11 +1,4 @@
-import {
-  Card,
-  CardContent,
-  CardMedia,
-  Typography,
-  Chip,
-  colors,
-} from "@mui/material";
+import { Card, CardContent, CardMedia, Typography, Chip } from "@mui/material";
 import { type Category } from "../../types";
 import { useAppSelector } from "../../store/hooks";
 import { memo } from "react";

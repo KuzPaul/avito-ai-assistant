@@ -4,12 +4,14 @@ interface ContainerProps {
   children: React.ReactNode;
   maxWidth?: number | string;
   px?: number | string;
+  py?: number | string;
 }
 
 export const Container = ({
   children,
   maxWidth = 1399,
   px = 4,
+  py = 0,
 }: ContainerProps) => {
   return (
     <Box
@@ -18,6 +20,7 @@ export const Container = ({
         mx: "auto",
         maxWidth,
         px,
+        py,
       }}
     >
       {children}

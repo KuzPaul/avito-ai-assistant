@@ -3,7 +3,6 @@ import {
   PaginationItem,
   Stack,
 } from "@mui/material";
-import { useEffect } from "react";
 
 interface PaginationProps {
   total: number;

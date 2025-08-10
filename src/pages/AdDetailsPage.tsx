@@ -18,6 +18,7 @@ import { getMissingFields } from "../utils/getMissingFields";
 import { PARAM_LABELS } from "../utils/getMissingFields";
 import { Container } from "../components/Layout/Container";
 
+
 export const AdDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();

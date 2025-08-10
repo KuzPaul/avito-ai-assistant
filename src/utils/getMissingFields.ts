@@ -1,17 +1,13 @@
 import type { Item } from "../types";
 import type {
-  AutoItemParams,
-  ElectronicsItemParams,
-  RealEstateItemParams,
-} from "../types/typesUpdate";
+  AutoParams,
+  ElectronicsParams,
+  RealEstateParams,
+} from "../types/index.ts";
 
 const FIELDS: Record<
   string,
-  (
-    | keyof AutoItemParams
-    | keyof ElectronicsItemParams
-    | keyof RealEstateItemParams
-  )[]
+  (keyof AutoParams | keyof ElectronicsParams | keyof RealEstateParams)[]
 > = {
   auto: [
     "brand",

@@ -1,6 +1,7 @@
+import type { AdFormValues } from "../types/adSchema";
+
 const API_BASE = "http://localhost:8080";
 
-// Базовый запрос
 const request = async <T>(
   endpoint: string,
   options?: RequestInit,
@@ -37,22 +38,9 @@ export const get = <T>(
 };
 
 // PUT запрос
-export const put = <T>(endpoint: string, data: any): Promise<T> => {
+export const put = <T>(endpoint: string, data: AdFormValues): Promise<T> => {
   return request<T>(endpoint, {
     method: "PUT",
     body: JSON.stringify(data),
   });
-};
-
-// POST запрос (для будущего)
-export const post = <T>(endpoint: string, data: any): Promise<T> => {
-  return request<T>(endpoint, {
-    method: "POST",
-    body: JSON.stringify(data),
-  });
-};
-
-// DELETE запрос
-export const del = <T>(endpoint: string): Promise<T> => {
-  return request<T>(endpoint, { method: "DELETE" });
 };

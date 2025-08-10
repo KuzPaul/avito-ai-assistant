@@ -1,5 +1,6 @@
 import { get, put } from "./clients.ts";
 import type { ItemsResponse, Item } from "../types/index.ts";
+import type { AdFormValues } from "../types/adSchema.ts";
 
 // Получить список объявлений
 export const getItems = (params: {
@@ -20,6 +21,6 @@ export const getItemById = (id: string) => {
 };
 
 // Обновить объявление
-export const updateItem = (id: string, data: Partial<Item>) => {
+export const updateItem = (id: string, data: AdFormValues) => {
   return put<Item>(`/items/${id}`, data);
 };

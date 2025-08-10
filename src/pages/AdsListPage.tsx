@@ -125,7 +125,7 @@ export const AdsListPage = () => {
                     gap: 2,
                   }}
                 >
-                  {items.map((item, index) => (
+                  {items.map((item) => (
                     <AdCard
                       key={item.id}
                       id={item.id}

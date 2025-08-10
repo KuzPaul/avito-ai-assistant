@@ -14,6 +14,7 @@ export interface AutoParams {
   brand?: string;
   model?: string;
   year?: number;
+  yearOfManufacture?: number;
   mileage?: number;
   transmission?: "manual" | "automatic";
   enginePower?: number;
@@ -57,4 +58,20 @@ export interface ItemListItem {
 export interface ItemsResponse {
   items: ItemListItem[];
   total: number;
+}
+
+// Типы для формы
+export interface AdFormData {
+  category: Category;
+  title: string;
+  price: number;
+  description: string;
+  params: ItemParams;
+}
+
+export interface FieldConfig {
+  name: string;
+  label: string;
+  type: "text" | "number" | "select";
+  options?: string[];
 }
