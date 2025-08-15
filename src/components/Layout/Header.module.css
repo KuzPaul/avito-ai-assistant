@@ -1,0 +1,100 @@
+.appBar {
+  background-color: inherit;
+}
+
+.toolbar {
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 24px 32px 0 32px;
+}
+
+.subtitle {
+  margin-bottom: 24px;
+}
+
+.toolbarRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.searchPanel {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background-color: var(--color-bg-paper);
+  padding: 12px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--color-shadow-card);
+  width: 100%;
+}
+
+.searchField {
+  flex: 1;
+  min-width: 0;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  background-color: var(--color-bg-subtle);
+}
+
+.searchField :global(.MuiOutlinedInput-notchedOutline) {
+  border: none;
+}
+
+.searchField :global(.MuiInputBase-input) {
+  cursor: pointer;
+}
+
+.searchIcon {
+  color: var(--color-text-secondary);
+}
+
+.controlGroup {
+  padding: 7px 8px;
+  background-color: var(--color-bg-subtle);
+  border-radius: var(--radius-md);
+}
+
+.toggleGroup :global(.MuiToggleButton-root.Mui-selected) {
+  color: var(--color-primary-mui);
+  background-color: transparent;
+}
+
+.toggleBtn {
+  border: none;
+  cursor: pointer;
+}
+
+.toggleBtnGrid {
+  padding: 0 10px 0 8px;
+  border-right: 3px solid var(--color-bg-paper);
+}
+
+.toggleBtnList {
+  padding: 0 8px 0 10px;
+}
+
+.sortWrapper {
+  padding: 5px;
+  background-color: var(--color-bg-subtle);
+  border-radius: var(--radius-md);
+}
+
+.sortControl {
+  min-width: 180px;
+  background-color: var(--color-bg-paper);
+}
+
+.sortControl :global(.MuiOutlinedInput-notchedOutline) {
+  border: none;
+}
+
+.sortSelect {
+  height: 32px;
+}
+
+.sortSelect:global(.Mui-focused .MuiOutlinedInput-notchedOutline) {
+  border-color: var(--color-primary-mui);
+}

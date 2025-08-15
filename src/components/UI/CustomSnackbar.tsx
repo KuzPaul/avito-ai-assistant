@@ -1,6 +1,7 @@
 import { Snackbar, Box, Typography } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CloseIcon from "@mui/icons-material/Close";
+import styles from "./CustomSnackbar.module.css";
 
 export type SnackbarState = {
   open: boolean;
@@ -30,70 +31,22 @@ export const CustomSnackbar = ({
       anchorOrigin={{ vertical: "top", horizontal: "right" }}
     >
       <Box
-        sx={{
-          display: "flex",
-          alignItems: "flex-start",
-          gap: 1.5,
-          px: 2,
-          py: 1.5,
-          borderRadius: "8px",
-          minWidth: 300,
-          maxWidth: 360,
-
-          bgcolor: isSuccess ? "#F6FFED" : "#FFF2F0",
-          border: `1px solid ${isSuccess ? "#B7EB8F" : "#FFCCC7"}`,
-        }}
+        className={`${styles.content} ${isSuccess ? styles.contentSuccess : styles.contentError}`}
       >
-        <Box sx={{ mt: "2px" }}>
+        <Box className={styles.iconWrap}>
           {isSuccess ? (
-            <CheckCircleIcon sx={{ color: "#52C41A", fontSize: 20 }} />
+            <CheckCircleIcon className={styles.successIcon} />
           ) : (
-            <Box
-              sx={{
-                width: 24,
-                height: 24,
-                bgcolor: "transparent",
-                borderRadius: "50%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                cursor: "pointer",
-                border: "1px solid red",
-              }}
-            >
-              <CloseIcon
-                sx={{
-                  color: "#FF4D4F",
-                  fontSize: 20,
-                }}
-              />
+            <Box className={styles.errorIconWrap}>
+              <CloseIcon className={styles.errorIcon} />
             </Box>
           )}
         </Box>
 
-        <Box sx={{ flex: 1 }}>
-          {title && (
-            <Typography
-              sx={{
-                fontSize: "14px",
-                lineHeight: "20px",
-                color: "rgba(0,0,0,0.85)",
-              }}
-            >
-              {title}
-            </Typography>
-          )}
-
+        <Box className={styles.body}>
+          {title && <Typography className={styles.title}>{title}</Typography>}
           {description && (
-            <Typography
-              sx={{
-                fontSize: "14px",
-                lineHeight: "20px",
-                color: "rgba(0,0,0,0.65)",
-              }}
-            >
-              {description}
-            </Typography>
+            <Typography className={styles.description}>{description}</Typography>
           )}
         </Box>
       </Box>

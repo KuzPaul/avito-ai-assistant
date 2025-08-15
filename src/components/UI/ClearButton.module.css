@@ -1,0 +1,10 @@
+.btn {
+  background-color: var(--color-bg-clear-btn);
+  width: 14px;
+  height: 14px;
+}
+
+.icon {
+  color: #ffffff;
+  font-size: 12px;
+}

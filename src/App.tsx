@@ -1,34 +1,37 @@
+import { lazy, Suspense, useMemo } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { ThemeProvider, createTheme } from "@mui/material";
+import { ThemeProvider } from "@mui/material";
 import { useAppSelector } from "./store/hooks";
-import { AdsListPage } from "./pages/AdsListPage";
-import { AdDetailsPage } from "./pages/AdDetailsPage";
-import { AdEditPage } from "./pages/AdEditPage";
+import { useThemeSync } from "./hooks/useThemeSync";
+import { createAppTheme } from "./theme/createAppTheme";
+import { Loading } from "./components/UI/Loading";
+
+const AdsListPage = lazy(() =>
+  import("./pages/AdsListPage").then((m) => ({ default: m.AdsListPage })),
+);
+const AdDetailsPage = lazy(() =>
+  import("./pages/AdDetailsPage").then((m) => ({ default: m.AdDetailsPage })),
+);
+const AdEditPage = lazy(() =>
+  import("./pages/AdEditPage").then((m) => ({ default: m.AdEditPage })),
+);
 
 function App() {
   const { theme: mode } = useAppSelector((state) => state.ui);
+  useThemeSync();
 
-  const theme = createTheme({
-    palette: {
-      mode: mode,
-      background: {
-        default: "#F7F5F8",
-        paper: "#FFFFFF",
-      },
-    },
-    typography: {
-      fontFamily: 'Roboto, "Helvetica Neue", Arial, sans-serif',
-    },
-  });
+  const theme = useMemo(() => createAppTheme(mode), [mode]);
 
   return (
     <ThemeProvider theme={theme}>
-      <Routes>
-        <Route path="/" element={<Navigate to="/ads" replace />} />
-        <Route path="/ads" element={<AdsListPage />} />
-        <Route path="/ads/:id" element={<AdDetailsPage />} />
-        <Route path="/ads/:id/edit" element={<AdEditPage />} />
-      </Routes>
+      <Suspense fallback={<Loading />}>
+        <Routes>
+          <Route path="/" element={<Navigate to="/ads" replace />} />
+          <Route path="/ads" element={<AdsListPage />} />
+          <Route path="/ads/:id" element={<AdDetailsPage />} />
+          <Route path="/ads/:id/edit" element={<AdEditPage />} />
+        </Routes>
+      </Suspense>
     </ThemeProvider>
   );
 }

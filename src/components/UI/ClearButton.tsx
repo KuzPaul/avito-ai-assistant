@@ -1,5 +1,6 @@
 import { IconButton, InputAdornment } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
+import styles from "./ClearButton.module.css";
 
 interface ClearButtonProps {
   onClick: () => void;
@@ -8,15 +9,8 @@ interface ClearButtonProps {
 export const ClearButton = ({ onClick }: ClearButtonProps) => {
   return (
     <InputAdornment position="end">
-      <IconButton
-        onClick={onClick}
-        sx={{
-          bgcolor: "rgba(0,0,0,0.25)",
-          width: "14px",
-          height: "14px",
-        }}
-      >
-        <ClearIcon sx={{ color: "#FFFFFF", fontSize: "12px" }} />
+      <IconButton onClick={onClick} className={styles.btn} size="small">
+        <ClearIcon className={styles.icon} />
       </IconButton>
     </InputAdornment>
   );

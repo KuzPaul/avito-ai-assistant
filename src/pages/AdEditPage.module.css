@@ -1,0 +1,109 @@
+.title {
+  font-size: 30px;
+  line-height: 40px;
+  margin-bottom: 18px;
+  font-weight: 500;
+}
+
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 18px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.divider {
+  width: 100%;
+}
+
+.dividerMb {
+  width: 100%;
+  margin-bottom: 18px;
+}
+
+.priceRow {
+  display: flex;
+  gap: 24px;
+  align-items: flex-end;
+  position: relative;
+}
+
+.paramsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.paramsTitle {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+
+.descriptionSection {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 34px;
+  position: relative;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.submitBtn {
+  text-transform: none;
+  font-size: 16px;
+  font-weight: 400;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+}
+
+.submitBtnActive {
+  background-color: var(--color-primary);
+  color: #ffffff;
+}
+
+.submitBtnActive:hover {
+  background-color: var(--color-primary);
+  opacity: 0.9;
+}
+
+.submitBtnDisabled {
+  background-color: var(--color-bg-disabled);
+  color: var(--color-text-disabled-btn);
+}
+
+.submitBtnDisabled:hover {
+  background-color: var(--color-bg-disabled);
+}
+
+.cancelBtn {
+  background-color: var(--color-bg-disabled);
+  color: var(--color-text-cancel);
+  text-transform: none;
+  font-size: 16px;
+  font-weight: 400;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+}
+
+.cancelBtn:hover {
+  background-color: var(--color-bg-disabled);
+}

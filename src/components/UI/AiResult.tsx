@@ -1,4 +1,5 @@
 import { Box, Button, Typography } from "@mui/material";
+import styles from "./AiResult.module.css";
 
 type Props = {
   value: string | number | null;
@@ -10,26 +11,12 @@ export const AiResult = ({ value, onApply, onClose }: Props) => {
   if (!value) return null;
 
   return (
-    <Box
-      sx={{
-        mt: 2,
-        p: 2,
-        borderRadius: "8px",
-        bgcolor: "#fff",
-        boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-        maxWidth: "450px",
-        position: "absolute",
-        right: "600px",
-        top: "-100px",
-      }}
-    >
-      <Typography sx={{ mb: 1 }}>{value}</Typography>
-
-      <Box sx={{ display: "flex", gap: 1 }}>
+    <Box className={styles.root}>
+      <Typography className={styles.text}>{value}</Typography>
+      <Box className={styles.actions}>
         <Button variant="contained" size="small" onClick={onApply}>
           Применить
         </Button>
-
         <Button size="small" onClick={onClose}>
           Закрыть
         </Button>

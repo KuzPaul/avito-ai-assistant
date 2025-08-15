@@ -1,0 +1,10 @@
+.root {
+  padding: 16px;
+}
+
+.retryBtn {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}

@@ -1,12 +1,8 @@
 import { Box, CircularProgress } from "@mui/material";
+import styles from "./Loading.module.css";
 
 export const Loading = () => (
-  <Box
-    display="flex"
-    justifyContent="center"
-    alignItems="center"
-    minHeight="400px"
-  >
+  <Box className={styles.root}>
     <CircularProgress />
   </Box>
 );

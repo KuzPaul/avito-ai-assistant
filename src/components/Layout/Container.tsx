@@ -1,4 +1,5 @@
 import { Box } from "@mui/material";
+import styles from "./Container.module.css";
 
 interface ContainerProps {
   children: React.ReactNode;
@@ -15,9 +16,8 @@ export const Container = ({
 }: ContainerProps) => {
   return (
     <Box
+      className={styles.container}
       sx={{
-        width: "100%",
-        mx: "auto",
         maxWidth,
         px,
         py,

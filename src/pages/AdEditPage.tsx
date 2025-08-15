@@ -1,9 +1,8 @@
 import { useEffect, useCallback, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Container } from "../components/Layout/Container";
-import IconGenerate from "../assets/iconGenerate.svg?react";
 import {
   Box,
   Typography,
@@ -11,11 +10,11 @@ import {
   CircularProgress,
   Divider,
 } from "@mui/material";
-
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { getItemById, updateItem } from "../api/items";
 import { Loading } from "../components/UI/Loading";
 import { ErrorAlert } from "../components/UI/ErrorAlert";
+import { ThemeToggle } from "../components/UI/ThemeToggle";
 import { queryClient } from "../utils/queryClient";
 import { useLLM } from "../hooks/useLLM";
 import { adSchema, type AdFormValues } from "../types/adSchema";
@@ -28,7 +27,9 @@ import {
 } from "../components/UI/CustomSnackbar";
 import { CATEGORY_FIELDS } from "../constants/Category";
 import { AiResult } from "../components/UI/AiResult";
+import { AiGenerateButton } from "../components/UI/AiGenerateButton";
 import { prepareAdData } from "../utils/prepareAdData";
+import styles from "./AdEditPage.module.css";
 
 const getDraftKey = (id: string) => `ad-draft-${id}`;
 
@@ -50,6 +51,7 @@ export const AdEditPage = () => {
   } = useLLM();
 
   const {
+    control,
     handleSubmit,
     reset,
     watch,
@@ -67,10 +69,11 @@ export const AdEditPage = () => {
     },
   });
 
-  const watchedCategory = watch("category");
-  const watchedTitle = watch("title");
-  const watchedPrice = watch("price");
-  const watchedDescription = watch("description");
+  const [watchedCategory, watchedTitle, watchedPrice, watchedDescription] =
+    useWatch({
+      control,
+      name: ["category", "title", "price", "description"],
+    });
   const isFormValid = !!watchedTitle && watchedPrice > 0 && !!watchedCategory;
 
   const {
@@ -123,7 +126,6 @@ export const AdEditPage = () => {
   const mutation = useMutation({
     mutationFn: (data: AdFormData) => {
       const payload = prepareAdData(data);
-      console.log("Отправляем:", payload);
       return updateItem(id!, payload);
     },
     onSuccess: () => {
@@ -149,19 +151,13 @@ export const AdEditPage = () => {
   const handleGenerateDescription = useCallback(async () => {
     const formData = watch() as AdFormData;
     const description = await generateDescriptionForAd(formData);
-
-    if (description) {
-      setAiDescription(description);
-    }
+    if (description) setAiDescription(description);
   }, [watch, generateDescriptionForAd]);
 
   const handleGeneratePrice = useCallback(async () => {
     const formData = watch() as AdFormData;
-
     const price = await generatePriceForAd(formData);
-    if (price) {
-      setPrice(price);
-    }
+    if (price) setPrice(price);
   }, [watch, generatePriceForAd]);
 
   const onSubmit = (data: AdFormValues) => {
@@ -171,7 +167,6 @@ export const AdEditPage = () => {
       params: data.params as ItemParams,
       description: data.description || "",
     };
-
     mutation.mutate(payload);
   };
 
@@ -185,31 +180,16 @@ export const AdEditPage = () => {
     );
 
   return (
-    <Container py={"32px"}>
-      <Typography
-        variant="h1"
-        fontWeight="500"
-        sx={{
-          fontSize: "30px",
-          lineHeight: "40px",
-          mb: "18px",
-        }}
-      >
-        Редактирование объявления
-      </Typography>
-      <form
-        style={{ display: "flex", flexDirection: "column" }}
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        {/* Категория */}
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "18px",
-            mb: "18px",
-          }}
-        >
+    <Container py="32px">
+      <Box className={styles.pageHeader}>
+        <Typography variant="h1" className={styles.title}>
+          Редактирование объявления
+        </Typography>
+        <ThemeToggle />
+      </Box>
+
+      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+        <Box className={styles.section}>
           <FormField
             label="Категория"
             required
@@ -222,9 +202,8 @@ export const AdEditPage = () => {
             showWarning={!watchedCategory}
             width="256px"
           />
-          {<Divider sx={{ width: "100%" }} />}
+          <Divider className={styles.divider} />
 
-          {/* Название */}
           <FormField
             label="Название"
             required
@@ -241,17 +220,9 @@ export const AdEditPage = () => {
               },
             }}
           />
-          {<Divider sx={{ width: "100%" }} />}
+          <Divider className={styles.divider} />
 
-          {/* Цена с кнопкой справа */}
-          <Box
-            sx={{
-              display: "flex",
-              gap: 3,
-              alignItems: "flex-end",
-              position: "relative",
-            }}
-          >
+          <Box className={styles.priceRow}>
             <FormField
               label="Цена"
               required
@@ -269,29 +240,12 @@ export const AdEditPage = () => {
                 },
               }}
             />
-            <Button
+            <AiGenerateButton
+              label="Узнать рыночную цену"
+              isLoading={isGeneratingPrice}
               onClick={handleGeneratePrice}
-              startIcon={<IconGenerate />}
-              disabled={isGeneratingPrice}
-              sx={{
-                borderRadius: "8px",
-                border: "none",
-                bgcolor: "#F9F1E6",
-                fontWeight: "400",
-                py: "5px",
-                fontSize: "14px",
-                lineHeight: "22px",
-                textTransform: "none",
-                color: "#FFA940",
-                px: "10px",
-              }}
-            >
-              {isGeneratingPrice ? (
-                <CircularProgress size={24} />
-              ) : (
-                "Узнать рыночную цену"
-              )}
-            </Button>
+              progressSize={24}
+            />
             <AiResult
               value={aiPrice}
               onApply={() => {
@@ -301,27 +255,11 @@ export const AdEditPage = () => {
               onClose={() => setPrice(null)}
             />
           </Box>
-          {<Divider sx={{ width: "100%" }} />}
+          <Divider className={styles.divider} />
         </Box>
 
-        {/* Характеристики */}
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 1.5,
-            mb: "18px",
-          }}
-        >
-          <Typography
-            variant="h2"
-            sx={{
-              fontWeight: 600,
-              fontSize: "16px",
-              lineHeight: 1.4,
-              mb: 1,
-            }}
-          >
+        <Box className={styles.paramsSection}>
+          <Typography variant="h2" className={styles.paramsTitle}>
             Характеристики
           </Typography>
           {watchedCategory &&
@@ -334,7 +272,6 @@ export const AdEditPage = () => {
                 value={watch(`params.${field.name}`) ?? ""}
                 onChange={(e) => {
                   const val = e.target.value;
-
                   if (field.type === "number") {
                     setValue(
                       `params.${field.name}`,
@@ -357,18 +294,9 @@ export const AdEditPage = () => {
               />
             ))}
         </Box>
-        {<Divider sx={{ width: "100%", mb: "18px" }} />}
+        <Divider className={styles.dividerMb} />
 
-        {/* Описание */}
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "flex-start",
-            mb: "34px",
-            position: "relative",
-          }}
-        >
+        <Box className={styles.descriptionSection}>
           <FormField
             label="Описание"
             multiline
@@ -385,31 +313,13 @@ export const AdEditPage = () => {
               },
             }}
           />
-          <Button
-            startIcon={<IconGenerate />}
+          <AiGenerateButton
+            label={
+              watchedDescription ? "Улучшить описание" : "Придумать описание"
+            }
+            isLoading={isGeneratingDescription}
             onClick={handleGenerateDescription}
-            disabled={isGeneratingDescription}
-            sx={{
-              borderRadius: "8px",
-              border: "none",
-              bgcolor: "#F9F1E6",
-              fontWeight: "400",
-              py: "5px",
-              fontSize: "14px",
-              lineHeight: "22px",
-              textTransform: "none",
-              color: "#FFA940",
-              px: "10px",
-            }}
-          >
-            {isGeneratingDescription ? (
-              <CircularProgress size={20} />
-            ) : watchedDescription ? (
-              "Улучшить описание"
-            ) : (
-              "Придумать описание"
-            )}
-          </Button>
+          />
           <AiResult
             value={aiDescription}
             onApply={() => {
@@ -420,38 +330,19 @@ export const AdEditPage = () => {
           />
         </Box>
 
-        {/* Кнопки действий */}
-        <Box sx={{ display: "flex", gap: "10px" }}>
+        <Box className={styles.actions}>
           <Button
             type="submit"
             variant="contained"
             disabled={!isFormValid || mutation.isPending}
-            sx={{
-              bgcolor: isFormValid ? "#1890FF" : "#D9D9D9",
-              color: isFormValid ? "#FFFFFF" : "rgba(243, 243, 243, 1)",
-              "&:hover": { bgcolor: isFormValid ? "#1890FF" : "#D9D9D9" },
-              textTransform: "none",
-              fontSize: "16px",
-              fontWeight: 400,
-              padding: "8px 12px",
-              borderRadius: "8px",
-            }}
+            className={`${styles.submitBtn} ${isFormValid ? styles.submitBtnActive : styles.submitBtnDisabled}`}
           >
             {mutation.isPending ? <CircularProgress size={24} /> : "Сохранить"}
           </Button>
           <Button
             variant="contained"
             onClick={() => navigate(`/ads/${id}`)}
-            sx={{
-              bgcolor: "#D9D9D9",
-              color: "rgba(90, 90, 90, 1)",
-              "&:hover": { bgcolor: "#D9D9D9" },
-              textTransform: "none",
-              fontSize: "16px",
-              fontWeight: 400,
-              padding: "8px 12px",
-              borderRadius: "8px",
-            }}
+            className={styles.cancelBtn}
           >
             Отменить
           </Button>

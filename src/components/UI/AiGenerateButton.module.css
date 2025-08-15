@@ -1,0 +1,16 @@
+.btn {
+  border-radius: var(--radius-md);
+  border: none;
+  background-color: var(--color-bg-warning);
+  font-weight: 400;
+  padding: 5px 10px;
+  font-size: 14px;
+  line-height: 22px;
+  text-transform: none;
+  color: var(--color-warning);
+}
+
+.btn:hover {
+  background-color: var(--color-bg-warning);
+  opacity: 0.9;
+}

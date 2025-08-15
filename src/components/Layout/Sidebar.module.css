@@ -1,0 +1,157 @@
+.root {
+  width: 100%;
+  max-width: 256px;
+  padding: 0;
+  margin: 0;
+}
+
+.filtersCard {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-bg-paper);
+  padding: 16px;
+  border-radius: var(--radius-md);
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.filtersTitle {
+  margin: 0;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--color-text-primary);
+}
+
+.accordion {
+  box-shadow: none;
+  margin: 0;
+}
+
+.accordion::before {
+  display: none;
+}
+
+.accordion:global(.Mui-expanded) {
+  margin: 0;
+}
+
+.accordionSummary {
+  padding-left: 0;
+  padding-right: 0;
+  min-height: 0;
+}
+
+.accordionSummary :global(.MuiAccordionSummary-content) {
+  margin: 0;
+  min-height: 0;
+}
+
+.accordionSummary:global(.Mui-expanded) {
+  min-height: 0;
+}
+
+.accordionSummary:global(.Mui-expanded .MuiAccordionSummary-content) {
+  margin: 0;
+  min-height: 0;
+}
+
+.accordionLabel {
+  font-size: 14px;
+  line-height: 22px;
+  margin-bottom: 8px;
+}
+
+.accordionDetails {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.checkbox {
+  padding: 0;
+}
+
+.categoryLabel {
+  margin: 0;
+  gap: 8px;
+}
+
+.revisionSwitch {
+  justify-content: space-between;
+  width: 100%;
+  margin: 0;
+}
+
+.revisionLabel {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.switch {
+  width: 44px;
+  height: 22px;
+  padding: 0;
+}
+
+.switch :global(.MuiSwitch-switchBase) {
+  padding: 0;
+  margin: 2px;
+}
+
+.switch :global(.MuiSwitch-switchBase.Mui-checked) {
+  transform: translateX(22px);
+}
+
+.switch :global(.MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track) {
+  background-color: var(--color-primary-mui);
+  opacity: 1;
+}
+
+.switch :global(.MuiSwitch-thumb) {
+  width: 18px;
+  height: 18px;
+  background-color: var(--color-switch-thumb);
+  border-radius: 50%;
+}
+
+.switch :global(.MuiSwitch-track) {
+  width: 44px;
+  height: 22px;
+  border-radius: 16px;
+  background-color: var(--color-switch-track);
+  opacity: 1;
+}
+
+.resetBtn {
+  background-color: var(--color-bg-paper);
+  padding: 12px;
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 14px;
+  border-radius: var(--radius-md);
+  transition: all 0.3s ease;
+  text-transform: none;
+}
+
+.resetBtn:hover {
+  background-color: var(--color-border-default);
+  color: var(--color-primary-mui);
+}
+
+.themeRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.themeLabel {
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--color-text-primary);
+}

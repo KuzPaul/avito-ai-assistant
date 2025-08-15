@@ -1,0 +1,21 @@
+.sectionTitle {
+  margin-bottom: 16px;
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 500;
+}
+
+.paramsList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.paramRow {
+  display: flex;
+  gap: 6px;
+}
+
+.paramLabel {
+  width: 148px;
+}

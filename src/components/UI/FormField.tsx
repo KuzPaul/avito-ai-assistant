@@ -1,12 +1,14 @@
 import { Box, Typography, TextField, Select, MenuItem } from "@mui/material";
 import Star from "../../assets/starRed.svg?react";
+import styles from "./FormField.module.css";
 
 interface FormFieldProps {
   label: string;
   required?: boolean;
   error?: boolean;
   helperText?: string;
-  value?: any;
+  value?: string | number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onChange?: (e: any) => void;
   type?: string;
   multiline?: boolean;
@@ -15,7 +17,7 @@ interface FormFieldProps {
   options?: string[];
   width?: string;
   showWarning?: boolean;
-  slotProps?: any;
+  slotProps?: object;
   name?: string;
   id?: string;
 }
@@ -38,39 +40,11 @@ export const FormField = ({
   id,
   name,
 }: FormFieldProps) => {
-  const fieldSx = {
-    "& .MuiInputBase-input": {
-      py: "6px",
-    },
-    "& .MuiOutlinedInput-root": {
-      backgroundColor: "#FFFFFF",
-      py: 0,
-      "& fieldset": {
-        borderColor: showWarning ? "#FFA940" : "#D9D9D9",
-        borderWidth: "1px",
-        borderRadius: "8px",
-      },
-      "&:hover fieldset": { borderColor: showWarning ? "#FFA940" : "#D9D9D9" },
-      "&.Mui-focused fieldset": {
-        borderColor: showWarning ? "#FFA940" : "#D9D9D9",
-      },
-    },
-  };
+  const fieldClass = `${styles.field} ${showWarning ? styles.fieldWarning : styles.fieldDefault}`;
 
   return (
-    <Box sx={{ width, maxWidth: "100%" }}>
-      <Typography
-        component="label"
-        sx={{
-          fontWeight: 600,
-          fontSize: "16px",
-          lineHeight: 1.4,
-          mb: 1,
-          display: "flex",
-          alignItems: "center",
-          gap: 1,
-        }}
-      >
+    <Box className={styles.wrapper} style={{ width }}>
+      <Typography component="label" className={styles.label}>
         {required && <Star />}
         {label}
       </Typography>
@@ -83,7 +57,7 @@ export const FormField = ({
           value={value || ""}
           onChange={onChange}
           error={error}
-          sx={fieldSx}
+          className={fieldClass}
         >
           <MenuItem value="">Не выбрано</MenuItem>
           {options.map((opt) => (
@@ -98,26 +72,18 @@ export const FormField = ({
           name={name}
           fullWidth
           type={type}
-          value={value || ""}
+          value={value ?? ""}
           onChange={onChange}
           error={error}
           multiline={multiline}
           rows={rows}
-          sx={fieldSx}
+          className={fieldClass}
           slotProps={slotProps}
         />
       )}
 
       {helperText && (
-        <Typography
-          variant="caption"
-          sx={{
-            color: "rgba(0, 0, 0, 0.25)",
-            mt: "2px",
-            display: "block",
-            mx: "left",
-          }}
-        >
+        <Typography variant="caption" className={styles.helperText}>
           {helperText}
         </Typography>
       )}

@@ -11,6 +11,7 @@ import { ErrorAlert } from "../components/UI/ErrorAlert";
 import { useQuery } from "@tanstack/react-query";
 import { Container } from "../components/Layout/Container";
 import { useCallback, useMemo } from "react";
+import styles from "./AdsListPage.module.css";
 
 export const AdsListPage = () => {
   const navigate = useNavigate();
@@ -47,7 +48,6 @@ export const AdsListPage = () => {
     placeholderData: (previousData) => previousData,
   });
 
-  //TODO на беке нет сортировки по цене сделал на фронте
   const { items, total } = useMemo(() => {
     if (sortBy !== "price") {
       return { items: data?.items || [], total: data?.total || 0 };
@@ -62,7 +62,7 @@ export const AdsListPage = () => {
       items: sorted.slice(start, start + LIMIT),
       total: sorted.length,
     };
-  }, [data, sortBy, sortOrder, page, LIMIT]);
+  }, [data, sortBy, sortOrder, page]);
 
   const handleCardClick = useCallback(
     (id: string) => navigate(`/ads/${id}`),
@@ -85,46 +85,30 @@ export const AdsListPage = () => {
       />
     );
 
+  const gridClass =
+    layout === "grid" ? styles.itemsGridGrid : styles.itemsGridList;
+
   return (
-    <Box
-      sx={{
-        width: "100%",
-        mx: "auto",
-        minHeight: "100vh",
-        bgcolor: "background.default",
-        gap: 0,
-      }}
-    >
+    <Box className={styles.page}>
       <Header total={total} />
       <Container>
-        <Box sx={{ display: "flex", mt: 2, gap: 3 }}>
+        <Box className={styles.content}>
           {!isMobile && (
-            <Box sx={{ width: 256, flexShrink: 0 }}>
+            <Box className={styles.sidebar}>
               <Sidebar />
             </Box>
           )}
 
-          <Grid size={{ xs: 12, md: 9 }} sx={{ p: 0 }}>
+          <Grid size={{ xs: 12, md: 9 }} className={styles.grid}>
             {items.length === 0 ? (
-              <Box sx={{ textAlign: "center", py: 8 }}>
+              <Box className={styles.empty}>
                 <Typography variant="h6" color="text.secondary">
                   Объявления не найдены
                 </Typography>
               </Box>
             ) : (
               <>
-                <Box
-                  sx={{
-                    display: "grid",
-                    gridTemplateColumns: {
-                      xs: "1fr",
-                      sm: layout === "grid" ? "repeat(2, 1fr)" : "1fr",
-                      md: layout === "grid" ? "repeat(3, 1fr)" : "1fr",
-                      lg: layout === "grid" ? "repeat(5, 1fr)" : "1fr",
-                    },
-                    gap: 2,
-                  }}
-                >
+                <Box className={`${styles.itemsGrid} ${gridClass}`}>
                   {items.map((item) => (
                     <AdCard
                       key={item.id}
@@ -132,6 +116,7 @@ export const AdsListPage = () => {
                       title={item.title}
                       price={item.price}
                       category={item.category}
+                      layout={layout}
                       needsRevision={item.needsRevision}
                       onClick={handleCardClick}
                     />
@@ -142,9 +127,7 @@ export const AdsListPage = () => {
                   total={total}
                   page={page}
                   limit={LIMIT}
-                  onChange={(newPage) => {
-                    handlePageChange(newPage);
-                  }}
+                  onChange={handlePageChange}
                 />
               </>
             )}

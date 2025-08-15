@@ -1,26 +1,19 @@
 import { Alert, AlertTitle, Box } from "@mui/material";
+import styles from "./ErrorAlert.module.css";
 
 interface ErrorAlertProps {
-  message: string;
+  message?: string;
   onRetry?: () => void;
 }
 
 export const ErrorAlert = ({ message, onRetry }: ErrorAlertProps) => (
-  <Box sx={{ p: 2 }}>
+  <Box className={styles.root}>
     <Alert
       severity="error"
       variant="filled"
       action={
         onRetry && (
-          <button
-            onClick={onRetry}
-            style={{
-              background: "none",
-              border: "none",
-              color: "white",
-              cursor: "pointer",
-            }}
-          >
+          <button type="button" onClick={onRetry} className={styles.retryBtn}>
             Повторить
           </button>
         )

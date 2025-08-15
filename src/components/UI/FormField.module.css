@@ -1,0 +1,57 @@
+.wrapper {
+  max-width: 100%;
+}
+
+.label {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.4;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.field :global(.MuiInputBase-input) {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+.field :global(.MuiOutlinedInput-root) {
+  background-color: var(--color-bg-input);
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.field :global(.MuiOutlinedInput-notchedOutline) {
+  border-width: 1px;
+  border-radius: var(--radius-md);
+}
+
+.fieldWarning :global(.MuiOutlinedInput-notchedOutline) {
+  border-color: var(--color-warning);
+}
+
+.fieldDefault :global(.MuiOutlinedInput-notchedOutline) {
+  border-color: var(--color-border-default);
+}
+
+.fieldWarning:hover :global(.MuiOutlinedInput-notchedOutline),
+.fieldDefault:hover :global(.MuiOutlinedInput-notchedOutline) {
+  border-color: var(--color-warning);
+}
+
+.fieldWarning:global(.Mui-focused .MuiOutlinedInput-notchedOutline),
+.fieldDefault:global(.Mui-focused .MuiOutlinedInput-notchedOutline) {
+  border-color: var(--color-warning);
+}
+
+.fieldDefault:global(.Mui-focused .MuiOutlinedInput-notchedOutline) {
+  border-color: var(--color-border-default);
+}
+
+.helperText {
+  color: var(--color-text-caption);
+  margin-top: 2px;
+  display: block;
+}

@@ -17,6 +17,8 @@ import { filtersActions, uiActions } from "../../store";
 import GridViewIcon from "@mui/icons-material/GridView";
 import ViewListIcon from "@mui/icons-material/ViewList";
 import { useCallback, useMemo } from "react";
+import { ThemeToggle } from "../UI/ThemeToggle";
+import styles from "./Header.module.css";
 
 type SortValue =
   | "newest"
@@ -32,7 +34,6 @@ export const Header = ({ total }: { total: number }) => {
   );
   const { layout } = useAppSelector((state) => state.ui);
 
-  // Состояние для активного элемента
   const handleSortChange = useCallback((value: SortValue) => {
     switch (value) {
       case "newest":
@@ -50,7 +51,7 @@ export const Header = ({ total }: { total: number }) => {
       default:
         return;
     }
-  }, []);
+  }, [dispatch]);
 
   const handleLayoutChange = (
     _e: React.MouseEvent<HTMLElement>,
@@ -61,7 +62,6 @@ export const Header = ({ total }: { total: number }) => {
     }
   };
 
-  // Определяем значение селекта
   const value = useMemo((): SortValue => {
     if (sortBy === "createdAt") return "newest";
     if (sortBy === "title")
@@ -76,130 +76,70 @@ export const Header = ({ total }: { total: number }) => {
       position="sticky"
       color="transparent"
       elevation={0}
-      sx={{ bgcolor: "inherit" }}
+      className={styles.appBar}
     >
-      <Toolbar
-        disableGutters
-        sx={{
-          flexDirection: "column",
-          alignItems: "flex-start",
-          p: "24px 32px 0 32px",
-        }}
-      >
-        {/* Заголовок */}
-        <Typography variant="h4" fontWeight="bold" gutterBottom>
-          Мои объявления
-        </Typography>
+      <Toolbar disableGutters className={styles.toolbar}>
+        <Box className={styles.toolbarRow}>
+          <Typography variant="h4" fontWeight="bold" gutterBottom>
+            Мои объявления
+          </Typography>
+          <ThemeToggle />
+        </Box>
 
-        {/* Количество объявлений */}
-        <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
+        <Typography
+          variant="body1"
+          color="text.secondary"
+          className={styles.subtitle}
+        >
           {total} объявления
         </Typography>
 
-        {/* Белый блок с поиском и селектом */}
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            gap: 2,
-            bgcolor: "white",
-            p: 1.5,
-            borderRadius: "8px",
-            boxShadow: "0px 1px 3px rgba(0,0,0,0.1)",
-            width: "100%",
-          }}
-        >
-          {/* Поле поиска с иконкой */}
+        <Box className={styles.searchPanel}>
           <TextField
             size="small"
             placeholder="Найти объявление...."
             value={search}
             onChange={(e) => dispatch(filtersActions.setSearch(e.target.value))}
-            sx={{
-              flex: 1,
-              minWidth: 0,
-              borderRadius: "8px",
-              cursor: "pointer",
-              bgcolor: "#F7F5F8",
-              "& fieldset": {
-                border: "none",
-              },
-              "& input": { cursor: "pointer" },
-            }}
+            className={styles.searchField}
             slotProps={{
               input: {
-                sx: { cursor: "pointer" },
                 endAdornment: (
                   <InputAdornment position="end">
-                    <SearchIcon
-                      sx={{
-                        color: "text.secondary",
-                      }}
-                    />
+                    <SearchIcon className={styles.searchIcon} />
                   </InputAdornment>
                 ),
               },
             }}
           />
-          <Box
-            sx={{ padding: "7px 8px", bgcolor: "#F7F5F8", borderRadius: "8px" }}
-          >
+          <Box className={styles.controlGroup}>
             <ToggleButtonGroup
               value={layout}
               exclusive
               onChange={handleLayoutChange}
               size="small"
-              sx={{
-                "& .MuiToggleButton-root.Mui-selected": {
-                  color: "#1976d2",
-                  backgroundColor: "transparent",
-                },
-              }}
+              className={styles.toggleGroup}
             >
               <ToggleButton
                 value="grid"
-                sx={{
-                  border: "none",
-                  padding: "0 10px 0 8px",
-                  borderRight: "3px solid white",
-                  cursor: "pointer",
-                }}
+                className={`${styles.toggleBtn} ${styles.toggleBtnGrid}`}
               >
                 <GridViewIcon />
               </ToggleButton>
               <ToggleButton
                 value="list"
-                sx={{
-                  border: "none",
-                  padding: "0 8px 0 10px",
-                  cursor: "pointer",
-                }}
+                className={`${styles.toggleBtn} ${styles.toggleBtnList}`}
               >
                 <ViewListIcon />
               </ToggleButton>
-            </ToggleButtonGroup>{" "}
+            </ToggleButtonGroup>
           </Box>
 
-          <Box sx={{ padding: "5px", bgcolor: "#F7F5F8", borderRadius: "8px" }}>
-            <FormControl
-              size="small"
-              sx={{
-                minWidth: 180,
-                bgcolor: "white",
-                "& fieldset": {
-                  border: "none",
-                },
-              }}
-            >
+          <Box className={styles.sortWrapper}>
+            <FormControl size="small" className={styles.sortControl}>
               <Select
                 value={value}
                 onChange={(e) => handleSortChange(e.target.value as SortValue)}
-                sx={{
-                  "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "#1976d2",
-                  },
-                  height: "32px",
-                }}
+                className={styles.sortSelect}
               >
                 <MenuItem value="newest">Сначала новые</MenuItem>
                 <MenuItem value="title-asc">По названию (А-Я)</MenuItem>

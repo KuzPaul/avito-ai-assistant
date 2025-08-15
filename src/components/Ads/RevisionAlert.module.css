@@ -1,0 +1,37 @@
+.warningBox {
+  position: relative;
+  margin-bottom: 36px;
+  padding: 12px 50px;
+  max-width: 512px;
+  background-color: var(--color-bg-warning);
+  border-radius: var(--radius-md);
+  box-shadow: var(--color-shadow-warning);
+}
+
+.warningBox::before {
+  content: "!";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  color: #ffffff;
+  width: 18px;
+  height: 18px;
+  background-color: var(--color-warning-icon);
+  left: 16px;
+  top: 16px;
+  border-radius: 50%;
+}
+
+.warningTitle {
+  margin-bottom: 4px;
+}
+
+.warningList {
+  margin: 0;
+  padding-left: 24px;
+}
+
+.successAlert {
+  margin-bottom: 24px;
+}

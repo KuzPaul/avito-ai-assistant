@@ -1,0 +1,52 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 40px;
+}
+
+.contentRow {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  margin-bottom: 32px;
+}
+
+@media (min-width: 900px) {
+  .contentRow {
+    flex-direction: row;
+  }
+}
+
+.imageBox {
+  flex: 1;
+  background-color: var(--color-bg-image);
+  min-height: 360px;
+  max-width: 480px;
+  border-radius: var(--radius-md);
+}
+
+.image {
+  width: 100%;
+  height: auto;
+  max-height: 400px;
+  object-fit: contain;
+  border-radius: var(--radius-lg);
+}
+
+.details {
+  flex: 1;
+}
+
+.sectionTitle {
+  margin-bottom: 16px;
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 500;
+}
+
+.description {
+  white-space: pre-wrap;
+  font-size: 16px;
+  line-height: 1.4;
+  max-width: 480px;
+}

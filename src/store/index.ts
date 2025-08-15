@@ -88,6 +88,7 @@ const uiSlice = createSlice({
       state.layout = action.payload;
     },
     toggleTheme: (state) => {
+      state.theme = state.theme === "light" ? "dark" : "light";
       localStorage.setItem("theme", state.theme);
     },
   },
@@ -95,6 +96,7 @@ const uiSlice = createSlice({
 
 export const filtersActions = filtersSlice.actions;
 export const uiActions = uiSlice.actions;
+export const uiReducer = uiSlice.reducer;
 
 export const store = configureStore({
   reducer: {
