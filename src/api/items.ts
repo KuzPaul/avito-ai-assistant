@@ -6,7 +6,7 @@ export const getItems = (params: {
   q?: string;
   categories?: string;
   needsRevision?: boolean;
-  sortColumn?: "title" | "createdAt";
+  sortColumn?: "title" | "createdAt" | "price";
   sortDirection?: "asc" | "desc";
   limit?: number;
   skip?: number;

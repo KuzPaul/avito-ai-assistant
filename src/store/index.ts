@@ -5,12 +5,12 @@ import {
 } from "@reduxjs/toolkit";
 import { type Category } from "../types";
 
-// === Фильтры ===
+// Фильтры
 interface FiltersState {
   search: string;
   categories: Category[];
   onlyNeedsRevision: boolean;
-  sortBy: "title" | "createdAt";
+  sortBy: "title" | "createdAt" | "price";
   sortOrder: "asc" | "desc";
   page: number;
 }
@@ -43,7 +43,7 @@ const filtersSlice = createSlice({
     setSort: (
       state,
       action: PayloadAction<{
-        by: "title" | "createdAt";
+        by: "title" | "createdAt" | "price";
         order: "asc" | "desc";
       }>,
     ) => {
@@ -59,7 +59,7 @@ const filtersSlice = createSlice({
   },
 });
 
-// === UI состояния ===
+//UI состояния
 interface UIState {
   isLoading: boolean;
   error: string | null;
@@ -88,7 +88,6 @@ const uiSlice = createSlice({
       state.layout = action.payload;
     },
     toggleTheme: (state) => {
-      state.theme = state.theme === "light" ? "dark" : "light";
       localStorage.setItem("theme", state.theme);
     },
   },
