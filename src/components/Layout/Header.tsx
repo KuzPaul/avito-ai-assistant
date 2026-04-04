@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   AppBar,
   Toolbar,
@@ -18,6 +17,13 @@ import { filtersActions, uiActions } from "../../store";
 import GridViewIcon from "@mui/icons-material/GridView";
 import ViewListIcon from "@mui/icons-material/ViewList";
 
+type SortValue =
+  | "newest"
+  | "title-asc"
+  | "title-desc"
+  | "price-asc"
+  | "price-desc";
+
 export const Header = ({ total }: { total: number }) => {
   const dispatch = useAppDispatch();
   const { search, sortBy, sortOrder } = useAppSelector(
@@ -26,24 +32,18 @@ export const Header = ({ total }: { total: number }) => {
   const { layout } = useAppSelector((state) => state.ui);
 
   // Состояние для активного элемента
-  const [activeSort, setActiveSort] = useState(sortBy);
 
-  const handleSortChange = (value: string) => {
+  const handleSortChange = (value: SortValue) => {
     if (value === "newest") {
       dispatch(filtersActions.setSort({ by: "createdAt", order: "desc" }));
-      setActiveSort("createdAt");
     } else if (value === "title-asc") {
       dispatch(filtersActions.setSort({ by: "title", order: "asc" }));
-      setActiveSort("title");
     } else if (value === "title-desc") {
       dispatch(filtersActions.setSort({ by: "title", order: "desc" }));
-      setActiveSort("title");
     } else if (value === "price-asc") {
       dispatch(filtersActions.setSort({ by: "price", order: "asc" }));
-      setActiveSort("price");
     } else if (value === "price-desc") {
       dispatch(filtersActions.setSort({ by: "price", order: "desc" }));
-      setActiveSort("price");
     }
   };
 
@@ -57,12 +57,12 @@ export const Header = ({ total }: { total: number }) => {
   };
 
   // Определяем значение селекта
-  const selectValue = () => {
-    if (sortBy === "createdAt" && sortOrder === "desc") return "newest";
-    if (sortBy === "title" && sortOrder === "asc") return "title-asc";
-    if (sortBy === "title" && sortOrder === "desc") return "title-desc";
-    if (sortBy === "price" && sortOrder === "asc") return "price-asc";
-    if (sortBy === "price" && sortOrder === "desc") return "price-desc";
+  const selectValue = (): SortValue => {
+    if (sortBy === "createdAt") return "newest";
+    if (sortBy === "title")
+      return sortOrder === "asc" ? "title-asc" : "title-desc";
+    if (sortBy === "price")
+      return sortOrder === "asc" ? "price-asc" : "price-desc";
     return "newest";
   };
 
@@ -74,11 +74,11 @@ export const Header = ({ total }: { total: number }) => {
       sx={{ bgcolor: "inherit" }}
     >
       <Toolbar
+        disableGutters
         sx={{
           flexDirection: "column",
           alignItems: "flex-start",
-          px: { xs: 2, md: 4 },
-          py: 3,
+          p: "24px 32px 0 32px",
         }}
       >
         {/* Заголовок */}
@@ -98,10 +98,10 @@ export const Header = ({ total }: { total: number }) => {
             alignItems: "center",
             gap: 2,
             bgcolor: "white",
-            p: "12px",
+            p: 1.5,
             borderRadius: "8px",
-            width: "100%",
             boxShadow: "0px 1px 3px rgba(0,0,0,0.1)",
+            width: "100%",
           }}
         >
           {/* Поле поиска с иконкой */}
@@ -112,6 +112,7 @@ export const Header = ({ total }: { total: number }) => {
             onChange={(e) => dispatch(filtersActions.setSearch(e.target.value))}
             sx={{
               flex: 1,
+              minWidth: 0,
               borderRadius: "8px",
               cursor: "pointer",
               bgcolor: "#F7F5F8",
@@ -187,7 +188,7 @@ export const Header = ({ total }: { total: number }) => {
             >
               <Select
                 value={selectValue()}
-                onChange={(e) => handleSortChange(e.target.value)}
+                onChange={(e) => handleSortChange(e.target.value as SortValue)}
                 sx={{
                   "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
                     borderColor: "#1976d2",
